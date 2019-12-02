@@ -13,6 +13,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class IndexController extends AbstractController
 {
     /**
+     * page d'accueil
+     *
      * @Route("/")
      */
     public function index()
