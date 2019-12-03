@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h1 class="m-5">Connexion</h1>
+    <form method="post">
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" class="form-control" name="_username"
+                    value="{{ last_username }}">
+        </div>
+        <div class="form-group">
+        <label>Mot de passe</label>
+        <input type="password" class="form-control" name="_password">
+        </div>
+        <div class="text-right">
+            <button type="submit" class="btn btn-info">
+                Se connecter
+            </button>
+        </div>
+    </form>
+{% endblock %}
+

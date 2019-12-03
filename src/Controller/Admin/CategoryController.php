@@ -66,7 +66,7 @@ class CategoryController extends AbstractController
             $category = $manager->find(Category::class, $id);
 
             //404 si le id n'est pas en bdd
-            if(is_null($category)){
+            if (is_null($category)) {
                 throw new NotFoundHttpException();
             }
 
@@ -88,7 +88,7 @@ class CategoryController extends AbstractController
             // ds l'entité Category sont ok
             if ($form->isValid()) {
                 //EntityManager enregistre la catégorie ds la bdd
-                $manager->persist($category);;
+                $manager->persist($category);
                 $manager->flush();
 
                 //message de confirmation
@@ -120,13 +120,28 @@ class CategoryController extends AbstractController
     public function delete(
         EntityManagerInterface $manager,
         Category $category
-    ) {
-        //suppression de la catégorie en bdd
-     $manager->remove($category);
-     //remove comme prsist a besoin d'un flush
-     $manager->flush();
+    )
+    {
+        /*
+         * Si j'ai un article ds la categorie, je ne peux pas la supprimer
+         */
+        // 1ère methode
+        // $nbArticles = $category->getArticles()->count();
+        // if (0 != $nbArticles) {
+        // 2éme methode
+        if ($category->getArticles()->isEmpty()) {
+            $this->addFlash('error', 'La categorie ne peut pas être supprimé car elle contient des articles');
 
-     $this->addFlash('success', 'La catégorie est supprimée');
-     return $this->redirectToRoute('app_admin_category_index');
+        } else {
+
+            //suppression de la catégorie en bdd
+            $manager->remove($category);
+            //remove comme persist a besoin d'un flush
+            $manager->flush();
+
+            $this->addFlash('success', 'La catégorie est supprimée');
+
+        }
+        return $this->redirectToRoute('app_admin_category_index');
     }
 }

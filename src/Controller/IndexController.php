@@ -8,7 +8,6 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class IndexController
  * @package App\Controller
- * @Route("/index")
  */
 class IndexController extends AbstractController
 {
