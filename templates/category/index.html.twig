@@ -1,7 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello CategoryController!{% endblock %}
+
 
 {% block body %}
-<h1 class="m-5">{{ category }}</h1>
+    <h1 class="mt-5">{{ category }}</h1>
+    {% if category.articles is not empty %}
+        {% include 'article/listeArticles.html.twig' with {'articles': articles } only %}
+    {% else %}
+        <p>Il n'y a pas encore d'article pour cette catègorie</p>
+    {% endif %}
 {% endblock %}

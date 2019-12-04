@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+
+
+    <div class="col-12 mx-auto">
+        <div class="mt-5 mb-4">
+            <h1>{{ article }}</h1>
+            <p><small><em>Publié le :
+                        {{ article.publicationDate|date('d-m-Y H:i') }}
+                    </em></small></p>
+        </div>
+        <div class="row">
+            {% if article.image is not null %}
+            <div class="col">
+                <img src="{{ asset('images/' ~ article.image) }}" height="300px" alt="">
+            </div>
+            {% endif %}
+            <div class="col">
+                <p>{{ article.content|nl2br }}</p>
+                <div class="text-right">
+                    <p>
+                        <small>
+                            <em>
+                                {{ article.author }} / About :
+                                <a href="{{ path('app_category_index', {'id': article.category.id}) }}">
+                                    {{ article.category }}
+                                </a>
+                            </em>
+                        </small>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+{% endblock %}
+
+

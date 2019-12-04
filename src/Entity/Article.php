@@ -51,9 +51,24 @@ class Article
      */
     private $author;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * validation pour l'image (File et Image - je peux decider quoi mettre ds mimeTypes)
+     *  @Assert\Image(
+     *     mimeTypesMessage="Le ficher doit être une image",
+     *     maxSize="500k",
+     *     maxSizeMessage="L'image ne doit pas dépasser {{ limit }}{{ suffix }}")
+     */
+    private $image;
+
     public function __construct()
     {
         $this->publicationDate = new \DateTime();
+    }
+
+    public function __toString()
+    {
+        return $this->title;
     }
 
     public function getId(): ?int
@@ -117,6 +132,18 @@ class Article
     public function setAuthor(?User $author): self
     {
         $this->author = $author;
+
+        return $this;
+    }
+
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    public function setImage($image): self
+    {
+        $this->image = $image;
 
         return $this;
     }

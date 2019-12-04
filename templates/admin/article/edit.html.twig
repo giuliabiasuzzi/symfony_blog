@@ -11,6 +11,14 @@
     {{ form_row(form.title) }}
     {{ form_row(form.content) }}
     {{ form_row(form.category) }}
+    {{ form_row(form.image) }}
+
+    {% if original_image is not null %}
+        <p>
+            Actuellement:
+            <img src="{{ asset('images/' ~ original_image) }}" height="200px" alt="">
+        </p>
+    {% endif %}
 
     <div class="text-right">
         <button class="btn btn-info">
@@ -22,5 +30,18 @@
     </div>
     {# fermeture balise form #}
     {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    {# pour surcharger le block parent#}
+    {{ parent() }}
+
+    <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            bsCustomFileInput.init();
+        })
+    </script>
+
 {% endblock %}
 

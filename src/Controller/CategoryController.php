@@ -3,8 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Category;
+use App\Repository\ArticleRepository;
 use App\Repository\CategoryRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -15,14 +18,31 @@ use Symfony\Component\Routing\Annotation\Route;
 class CategoryController extends AbstractController
 {
     /**
-     * @Route("/{id}")
+     * @Route("/{id}", defaults={"id":null}, requirements={"id": "\d+"})
      */
-    public function index(Category $category)
+    public function index(
+        Category $category,
+        ArticleRepository $articleRepository)
+
     {
+        /*
+         * Lister les 2/3 derniers articles en date de la categorie
+         * avec un lien vers une page article à créer ds un nouveau conrolleur Article
+         * qui affiche le détail de l'article et son image, si presente
+         */
+
+        // les 3 dernieres articles de la categorie en ordre de date
+        $articles = $articleRepository->findBy(
+                                            ['category' => $category],
+                                            ['publicationDate' =>'ASC'],
+                                                3);
+        //dump($articles);
+
         return $this->render(
             'category/index.html.twig',
             [
-                'category' => $category
+                'category' => $category,
+                'articles' => $articles
             ]
         );
     }
