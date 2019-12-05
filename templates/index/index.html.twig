@@ -7,5 +7,12 @@
     <h1 class="m-4">Bienvenu sur le blog des chats développeurs</h1>
     <p>Found somthing move i bite it tail give me attention or face the wrath of my claws </p>
     <p>Cat ipsum dolor sit amet, tickle my belly at your own peril i will pester for food when you're in the kitchen even if it's salad make it to the carpet before i vomit mmmmmm meow meow, i tell my human yet ask for petting. The fat cat sat on the mat bat away with paws. Meowing chowing and wowing shake treat bag, and cat fur is the new black yowling nonstop the whole night or purrrrrr...</p>
+
+    {#
+   inclusion du template qui affiche la liste de tous les articles
+   en ordre chronologique décroissant, fans filtre de categorie
+   #}
+
     {% include 'article/listeArticles.html.twig' with {'articles': articles } only %}
+
 {% endblock %}

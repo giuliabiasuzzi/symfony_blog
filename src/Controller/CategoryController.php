@@ -34,7 +34,7 @@ class CategoryController extends AbstractController
         // les 3 dernieres articles de la categorie en ordre de date
         $articles = $articleRepository->findBy(
                                             ['category' => $category],
-                                            ['publicationDate' =>'ASC'],
+                                            ['publicationDate' =>'DESC'],
                                                 3);
         //dump($articles);
 

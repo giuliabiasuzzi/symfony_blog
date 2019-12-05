@@ -7,14 +7,45 @@
         Ajouter un article
     </a>
 
-    <table class="table table-striped">
+    {# formulaire de recherche #}
+    <div class="card bg-light mb-3 p-3">
+        <div class="car-body">
+            {{ form_start(search_form) }}
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form_row(search_form.title) }}
+                </div>
+                <div class="col-md-6">
+                    {{ form_row(search_form.category) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form_row(search_form.start_date) }}
+                </div>
+                <div class="col-md-6">
+                    {{ form_row(search_form.end_date) }}
+                </div>
+            </div>
+            <div class="text-right">
+                <button type="submit" class="btn btn-info">
+                    Rechercher
+                </button>
+            </div>
+            {{ form_end(search_form) }}
+
+        </div>
+    </div>
+
+    <table class="table table-striped" style="margin-bottom: 5rem">
         <tr>
             <th>Id</th>
             <th>Titre</th>
             <th>Auteur</th>
             <th>Categorie</th>
             <th>Date de publication</th>
-            <th width="250px"></th>
+            <th width="350px"></th>
+            <th>Commentaires</th>
         </tr>
         {% for article in articles %}
             <tr>
@@ -32,10 +63,74 @@
                        class ="btn btn-dark mb-3">
                         Supprimer
                     </a>
+                    <a href="{{ path('app_admin_article_ajaxcontent', {'id': article.id}) }}"
+                       class="btn btn-outline-secondary btn-content mb-3">
+                        Aperçu
+                    </a>
+                </td>
+                <td class="text-center">
+                    <a href="{{ path('app_admin_comment_index', {'id': article.id}) }}"
+                    class="badge badge-info badge-pill p-2 m-3">
+                        {{ article.comments.count }}
+                        {# autre possibilité : #}
+                        {# {{ article.comments|lenght }} #}
+                    </a>
                 </td>
             </tr>
         {% endfor %}
     </table>
 
+    {# modal pour affiche l'apperçu de l'article #}
+    <div class="modal" tabindex="-1" role="dialog" id="modal-content">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Aperçu</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info" data-dismiss="modal">
+                        Fermer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{# surchargement du block javascript #}
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+        $(function () {
+            $('.btn-content').click(function (event) {
+                //evite la redirection
+                event.preventDefault();
+
+                var href = $(this).attr('href');
+
+                //appel de la page en GET (methode)
+                $.get(
+                    //ce que j'ai stoqué c'est le contenu du href du button
+                    href,
+                    function (reponse) {
+                        //je recuper le href
+                        var $modal = $('#modal-content');
+                        //je passe le contenu de l'article
+                        $modal.find('.modal-body').html(reponse);
+                        //j'affiche le contenu
+                        $modal.modal('show');
+                    }
+                )
+            })
+        });
+    </script>
 
 {% endblock %}

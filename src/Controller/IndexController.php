@@ -22,7 +22,7 @@ class IndexController extends AbstractController
     )
     {
         // les 5 dernieres articles de la categorie en ordre de date
-        $articles = $articleRepository->findBy([], ['publicationDate' =>'ASC'], 5);
+        $articles = $articleRepository->findBy([], ['publicationDate' =>'DESC'], 5);
         return $this->render('index/index.html.twig',
             [
                 'articles' => $articles

@@ -12,6 +12,10 @@
         <label>Mot de passe</label>
         <input type="password" class="form-control" name="_password">
         </div>
+
+        {# champ caché : $_SERVER['HTTP_REFERER'] #}
+        <input type="hidden" name="_target_path"
+               value="{{ app.request.headers.get('referer') }}">
         <div class="text-right">
             <button type="submit" class="btn btn-info">
                 Se connecter

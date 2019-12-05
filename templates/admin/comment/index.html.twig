@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello CommentController!{% endblock %}
+
+{% block body %}
+    <h1 class="m-5">Gestion commentaires</h1>
+    <h2>{{ article }}</h2>
+    {% if article.comments is not empty %}
+    <table class="table table-striped">
+        <tr>
+            <th>Id</th>
+            <th>Contenu du commentaire</th>
+            <th>Auteur</th>
+            <th>Date de publication</th>
+            <th width="100px"></th>
+        </tr>
+        {% for comment in comments  %}
+            <tr>
+                <td>{{ comment.id }}</td>
+                <td>{{ comment.content }}</td>
+                <td>{{ comment.user }}</td>
+                <td>{{ comment.publicationDate|date('d-m-Y H:i') }}</td>
+                <td><a href="{{ path('app_admin_comment_delete', {'id': comment.id}) }}"
+                       class ="btn btn-dark mb-3">
+                        Supprimer
+                    </a></td>
+            </tr>
+        {% endfor %}
+{% else %}
+        <p class="m-5 text-center">Aucun commentaire pour cet article</p>
+{% endif %}
+    </table>
+
+{% endblock %}

@@ -4,37 +4,71 @@
 {% block body %}
 
 
-    <div class="col-12 mx-auto">
-        <div class="mt-5 mb-4">
-            <h1>{{ article }}</h1>
-            <p><small><em>Publié le :
-                        {{ article.publicationDate|date('d-m-Y H:i') }}
-                    </em></small></p>
-        </div>
-        <div class="row">
-            {% if article.image is not null %}
+<div class="col-12 mx-auto">
+    <div class="mt-5 mb-4">
+        <h1>{{ article }}</h1>
+        <p><small><em>Publié le :
+                    {{ article.publicationDate|date('d-m-Y H:i') }}
+                </em></small></p>
+    </div>
+    <div class="row">
+        {% if article.image is not null %}
             <div class="col">
                 <img src="{{ asset('images/' ~ article.image) }}" height="300px" alt="">
             </div>
-            {% endif %}
-            <div class="col">
-                <p>{{ article.content|nl2br }}</p>
-                <div class="text-right">
-                    <p>
-                        <small>
-                            <em>
-                                {{ article.author }} / About :
-                                <a href="{{ path('app_category_index', {'id': article.category.id}) }}">
-                                    {{ article.category }}
-                                </a>
-                            </em>
-                        </small>
-                    </p>
-                </div>
+        {% endif %}
+        <div class="col">
+            <p>{{ article.content|nl2br }}</p>
+            <div class="text-right">
+                <p>
+                    <small>
+                        <em>
+                            {{ article.author }} / About :
+                            <a href="{{ path('app_category_index', {'id': article.category.id}) }}">
+                                {{ article.category }}
+                            </a>
+                        </em>
+                    </small>
+                </p>
             </div>
         </div>
     </div>
+    <div class="mt-5 mb-4">
+        {% if app.user is null %}
+        <a href="{{ path('app_registration_login') }}" class="btn btn-outline-info">
+            Connexion
+        </a>
+        {% else %}
+        <h3 class="m-4">Laisser un commentaire</h3>
+        <div class="w-100 mb-2">
+            {{ form_start(form) }}
+            {{ form_row(form.content) }}
+            <div class="mb-5">
+                <button type="submit" class="btn btn-info">
+                    Enregistrer
+                </button>
+                <a href="{{ path('app_index_index') }}" class="btn btn-outline-info">
+                    Retour
+                </a>
+            </div>
+            {{ form_end(form) }}
+            {% endif %}
+            {% if article.comments is empty %}
+                <p class="text-center m-5">Sois le premier à commenter cet article ! </p>
+            {% else %}
+                {% for comment in comments %}
+                    <p class="m-3">{{ comment.content }}</p>
+                    <p><small><em>Publié le :
+                                {{ comment.publicationDate|date('d-m-Y H:i') }}
+                                par {{ comment.user }}
+                            </em></small></p>
+                    <hr>
+                {% endfor %}
+            {% endif %}
+        </div>
     </div>
-{% endblock %}
+
+
+    {% endblock %}
 
 
